@@ -10,6 +10,6 @@ stage ('Build') {
 	node {
 		echo "My branch is: ${env.BRANCH_NAME}"
 		//build your gradle flavor, passes the current build number as a parameter to gradle
-		sh "./gradlew clean assembleDebug
+		sh "./gradlew clean assembleDebug"
 	}
 }
