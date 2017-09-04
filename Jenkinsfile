@@ -9,6 +9,6 @@ stage ('Checkout'){
 stage ('Build') {
 	node {
 		echo "My branch is: ${env.BRANCH_NAME}"
-		sh 'gradlew --refresh-dependencies clean assemble'
+		bat 'gradlew --refresh-dependencies clean assemble'
 	}
 }
