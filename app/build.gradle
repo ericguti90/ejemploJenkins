@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+ext.versionMajor = 1;
+ext.versionMinor = 4;
+ext.versionPatch = 0;
+ext.jenkinsBuildNumber = Integer.valueOf(System.env.BUILD_NUMBER ?: 0)
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -7,9 +12,16 @@ android {
         applicationId "org.vintegris.ejemplojenkins"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionName computeVersionName()
+        versionCode computeVersionCode()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        debug {
+            //Override the local debug keystore, so that APKs built by
+            // any developer, or by Jenkins can be installed on any device
+            storeFile file ('../debug.keystore')
+        }
     }
     buildTypes {
         release {
@@ -17,6 +29,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+def computeVersionName() {
+    return "${versionMajor}.${versionMinor}.${versionPatch}"
+}
+
+def computeVersionCode() {
+    return (versionMajor * 100_000) + (versionMinor * 10_000) + (versionPatch * 1_000) + jenkinsBuildNumber
 }
 
 dependencies {
